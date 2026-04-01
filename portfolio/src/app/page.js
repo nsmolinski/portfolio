@@ -1,11 +1,16 @@
+'use client'
 import Link from "next/link";
 import Image from "next/image";
+import { useState } from "react";
+
 export default function Home() {
   const projects = [
     {name: 'NaPrzystanek - Projekt Zespołowy', description: 'aplikacja webowa typu MERN/Next.js (stworzona w ramach przedmiotu Projekt Zespołowy przeze mnie i 3 znajomych ze studiów) do planowania podróży komunikacją miejską w Gdańsku. Projekt integruje API ZTM w celu wyświetlania tras, najbliższych przejazdów i harmonogramów linii.',technologies: ['Java', 'JavaScript', 'MongoDB', 'Docker'], image: 'naprzystanek.png', link: 'https://github.com/msiemienski/Projekt-Zespolowy-NaPrzystanek'},
     {name: 'ProgTalk', description: 'Aplikacja webowa będąca platformą dyskusyjną dla programistów. System wyróżnia się hierarchiczną (drzewiastą) strukturą tematów oraz zaawansowanym systemem moderacji, w którym twórcy wątków stają się ich moderatorami. Projekt integruje WebSockety do komunikacji w czasie rzeczywistym oraz bibliotekę highlight.js do profesjonalnego wyświetlania fragmentów kodu we wpisach.',technologies: ['Node.js', 'Vue.js', 'MongoDB', 'Socket.io', 'Passport.js', 'Docker'], image: 'progtalk.png', link: 'https://github.com/nsmolinski/Progtalk-projekt-technologie-sieci-web'},
     {name: 'Petsitter', description: 'Serwis webowy do wystawiania i przeglądania ogłoszeń dotyczących opieki nad zwierzętami.', technologies: ['Angular', 'TypeScript', 'JSON Server'], image: 'petsitter.png', link: 'https://github.com/nsmolinski/Petsitter-projekt-frontend-development-ii'}
   ]
+  const [loaded, setLoaded] = useState({})
+  
   return (
     <div>
       <main className="px-4 sm:px-6 md:px-8">
@@ -32,14 +37,21 @@ export default function Home() {
                 </div>
                 <div className="mt-5">
                   {project.image && (
-                    <div className="my-5 w-full">
+                    <div className="relative my-5 w-full rounded-lg overflow-hidden">
+                      {!loaded[index] && (
+                        <div className="absolute inset-0 bg-gray-200">
+                          <div className="absolute inset-0 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 animate-[shimmer_1.5s_infinite] bg-[length:200%_100%]" />
+                        </div>
+                      )}
                       <Image
                         src={`/${project.image}`}
                         alt={project.name}
                         width={800}
                         height={400}
-                        className="rounded-lg object-cover w-full h-auto shadow-sm"
-                        loading="eager"
+                        className={`rounded-lg object-cover w-full h-auto shadow-sm transition-opacity ${
+                          !loaded[index] ? "opacity-0" : "opacity-100"
+                        }`}
+                        onLoad={() => setLoaded(prev => ({ ...prev, [index]: true }))}
                       />
                     </div>
                   )}
