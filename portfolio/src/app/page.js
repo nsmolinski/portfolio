@@ -49,11 +49,9 @@ export default function Home() {
                         width={800}
                         height={400}
                         className={`rounded-lg object-cover w-full h-auto shadow-sm transition-opacity ${
-                          !loaded[index] ? "opacity-0" : "opacity-100"
+                          loaded[index] ? "opacity-100" : "opacity-0"
                         }`}
-                        onLoad={setTimeout(() => {
-                          setLoaded(prev => ({ ...prev, [index]: true }));
-                        }, 400)}
+                        onLoad={() => setLoaded(prev => ({ ...prev, [index]: true }))}
                       />
                     </div>
                   )}
